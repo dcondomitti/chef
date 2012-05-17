@@ -44,6 +44,12 @@ class Chef
         :long => "--hide-healthy",
         :description => "Hide nodes that have run chef in the last hour"
 
+      option :healthy_time,
+        :short => "-t",
+        :long => "--healthy-time",
+        :description => "Set a threshold for a node to be considered healthy. (Most useful in conjunction with -H)",
+        :default => 1
+
       def highline
         @h ||= HighLine.new
       end
@@ -77,7 +83,7 @@ class Chef
           if hours > 24
             color = "RED"
             text = hours_text
-          elsif hours >= 1
+          elsif hours >= config[:healthy_time]
             color = "YELLOW"
             text = hours_text
           else
@@ -99,7 +105,7 @@ class Chef
             line_parts << platform
           end
 
-          highline.say(line_parts.join(', ') + '.') unless (config[:hide_healthy] && hours < 1)
+          highline.say(line_parts.join(', ') + '.') unless (config[:hide_healthy] && config[:healthy_time] < 1)
         end
 
       end
