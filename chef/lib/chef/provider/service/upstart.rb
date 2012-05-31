@@ -25,7 +25,7 @@ class Chef
   class Provider
     class Service
       class Upstart < Chef::Provider::Service::Simple
-        UPSTART_STATE_FORMAT = /\w+ \(?(\w+)\)?[\/ ](\w+)/
+        UPSTART_STATE_FORMAT = /\w+ \(?([^\)]+)\)?[\/ ](\w+)/
        
         # Upstart does more than start or stop a service, creating multiple 'states' [1] that a service can be in.
         # In chef, when we ask a service to start, we expect it to have started before performing the next step
